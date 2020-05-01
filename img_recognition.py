@@ -18,6 +18,7 @@ def identificarItems(img_path,pathItems):
     # pathImgSlots = img_path.replace("/",C'\')
     itemSlots = cv2.imread(img_path)
     itemSlotsGrey = cv2.cvtColor(itemSlots,cv2.COLOR_BGR2GRAY)
+    itemsSlotsGrey = cv2.pyrUp(itemSlotsGrey)
     items = []
     for itemImagen in pathItems:
         try:
@@ -25,7 +26,7 @@ def identificarItems(img_path,pathItems):
             # itemImgGrey = cv2.cvtColor(itemImg, cv2.COLOR_BGR2GRAY)          
             w,h = itemImgGrey.shape[::-1]
             res = cv2.matchTemplate(itemSlotsGrey, itemImgGrey, cv2.TM_CCOEFF_NORMED)
-            threshhold = 0.8
+            threshhold = 0.7
             loc = np.where(res >= threshhold)
             for point in zip(*loc[::-1]):
                 match = cv2.rectangle(itemSlotsGrey,point,(point[0]+w, point[1]+h), (0,255,255),2)
